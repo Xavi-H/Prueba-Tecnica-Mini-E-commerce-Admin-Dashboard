@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PruebaTecnica</title>
-</head>
+<?php include_once __DIR__ . '/includes/head.html'; ?>
+<?php include_once __DIR__ . '/includes/header.html'; ?>
+
 <body>
     <h1>Productos</h1>
     <div id="listado-productos"></div>
@@ -39,5 +35,5 @@
         });
         // TODO: Funcion para implementar producto al carro
     </script>
-</body>
-</html>
+
+<?php include_once __DIR__ . '/includes/footer.html'; ?>
