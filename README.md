@@ -1,7 +1,5 @@
 // TODO: Frontend:
 
-    - Catalogo Productos productos: Una página principal que muestre una lista de productos (puedes inventarte 6-8 productos de prueba en la base de datos con nombre, precio, imagen falsa y stock).
-
     - Carrito de compra: El usuario debe poder añadir productos a un carrito.
     
     - Checkout (Simulado): Un botón para "Finalizar Compra". No hace falta pasarela de pago. Al pulsar, debe pedir un email de contacto y crear el registro del pedido en la base de datos restando el stock correspondiente.

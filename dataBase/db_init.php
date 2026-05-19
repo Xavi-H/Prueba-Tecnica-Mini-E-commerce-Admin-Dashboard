@@ -19,3 +19,5 @@ $db->exec("INSERT INTO productos (nom, descripcio, imatge, preu, stock) VALUES
 ('Cronómetro digital', 'Cronómetro deportivo resistente al agua', 'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQOO66nrQfhuf8XCbyaN-vi9c9jHa-ybl3wiEuRBol-roRJyNH4G6pantaXuZGMjwT1ZBanby4uYUu4BEvaefNCBiHSPtaN-eg9TOchI7itZ58Ax3FG_TAS40yz4w&usqp=CAc', 24.99, 65),
 ('Portería portátil', 'Portería plegable para entrenamientos de fútbol', 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRdngIkDEtB5iTlYm48ah6Hyw0SQ07d8ikqun8CiGoSigC87S0J0Cds8AF2bZarnyjih91t01QTDp7B6h4znYuOeNdWbVpShGjJ5ZQwxxq8HktQWwyTicuMpieWOJICe_voS-cijnxarA&usqp=CAc', 22.99, 18),
 ('Escalera de agilidad', 'Escalera de coordinación para entrenamiento físico', 'https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT58qDc4SKPweTZ3KWARH18WbicYVvJU365ghpOy8UNM_jQkbM5dSUkXd0hH56CmozQKXLmh-MaN4fRpiTh5uYZjeSlAA8Jiaqdmrv2RV49m3YE2MdzZC5sqlcg3D0gmzgjAHySntsfEaQ&usqp=CAc', 15.29, 38);");
+
+// TODO: Tabla pedidos y lineas pedidos y relacionar con productos para el carrito de compra

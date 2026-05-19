@@ -6,7 +6,7 @@
     <div id="listado-productos"></div>
 
     <script>
-        const url = "http://localhost:3000/api/productos.php"; // Mostra tots els productes
+        const url = "/api/productos.php"; // Mostra tots els productes
         fetch(url)
             .then(response => response.json())
             .then(data => {
@@ -34,6 +34,9 @@
         document.getElementById("listado-productos").innerHTML = "<p>Error de conexión con la API.</p>";
         });
         // TODO: Funcion para implementar producto al carro
+        function añadirAlCarrito(idProducto) {
+            
+        }
     </script>
 
 <?php include_once __DIR__ . '/includes/footer.html'; ?>
