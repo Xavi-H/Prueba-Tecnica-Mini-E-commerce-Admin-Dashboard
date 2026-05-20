@@ -20,4 +20,21 @@ $db->exec("INSERT INTO productos (nom, descripcio, imatge, preu, stock) VALUES
 ('Portería portátil', 'Portería plegable para entrenamientos de fútbol', 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRdngIkDEtB5iTlYm48ah6Hyw0SQ07d8ikqun8CiGoSigC87S0J0Cds8AF2bZarnyjih91t01QTDp7B6h4znYuOeNdWbVpShGjJ5ZQwxxq8HktQWwyTicuMpieWOJICe_voS-cijnxarA&usqp=CAc', 22.99, 18),
 ('Escalera de agilidad', 'Escalera de coordinación para entrenamiento físico', 'https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT58qDc4SKPweTZ3KWARH18WbicYVvJU365ghpOy8UNM_jQkbM5dSUkXd0hH56CmozQKXLmh-MaN4fRpiTh5uYZjeSlAA8Jiaqdmrv2RV49m3YE2MdzZC5sqlcg3D0gmzgjAHySntsfEaQ&usqp=CAc', 15.29, 38);");
 
-// TODO: Tabla pedidos y lineas pedidos y relacionar con productos para el carrito de compra
+// Taula que registra todos los pedidos
+$db->exec("CREATE TABLE IF NOT EXISTS pedidos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email_cliente TEXT,
+    total REAL,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)");
+
+// Taula que registra las lineas de cada pedido (producto y cantidad)
+$db->exec("CREATE TABLE IF NOT EXISTS lineas_pedido (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    pedido_id INTEGER,
+    producto_id INTEGER,
+    cantidad INTEGER,
+    precio_unitario REAL,
+    FOREIGN KEY (pedido_id) REFERENCES pedidos (id),
+    FOREIGN KEY (producto_id) REFERENCES productos (id)
+)");
