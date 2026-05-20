@@ -1,11 +1,26 @@
+// Devuelve el carrito en objeto (Array)
+function getCarrito() {
+    return JSON.parse(localStorage.getItem('carrito') || '[]');
+}
+
 function mostrarCarrito() {
-    const carrito = getCarrito();
     const contenedorCarrito = document.getElementById('carrito-contenedor');
+
+    if(!contenedorCarrito) return; // Si no existe el contenedor (Resto de paginas que no sean la del carrito)
+    
     contenedorCarrito.innerHTML = '';
+    const carrito = getCarrito();
+
     if (carrito.length === 0) {
         contenedorCarrito.innerHTML = '<p>No hay productos en el carrito.</p>';
-    } else {
-        carrito.forEach(producto => {
+        return;
+    }
+
+    carrito.forEach(producto => {
+        // Calcular subtotal
+        const subtotal = producto.precio * producto.cantidad;
+        total += subtotal;
+
         const div = document.createElement('div');
         div.classList.add('producto-carro');
         div.innerHTML = `
@@ -15,14 +30,18 @@ function mostrarCarrito() {
             <p>Cantidad: ${producto.cantidad}</p>
             <button class="btn-eliminar" data-id="${producto.id}">Eliminar</button>
         `;
+        // Eliminar producto del carrito
+        div.querySelector('.btn-eliminar').addEventListener('click', function () {
+            eliminarProductoDelCarrito(Number(this.dataset.id));
+        });
         contenedorCarrito.appendChild(div);
     });
-    }
-}
 
-// Devuelve el carrito en objeto (Array)
-function getCarrito() {
-    return JSON.parse(localStorage.getItem('carrito') || '[]');
+    // Mostrar el total
+    const totalDiv = document.createElement('div');
+    totalDiv.classList.add('carrito-total');
+    totalDiv.innerHTML = `<strong>Total: $${total.toFixed(2)}</strong>`;
+    contenedorCarrito.appendChild(totalDiv);
 }
 
 /**
@@ -41,8 +60,13 @@ function addProductoAlCarrito(producto) {
     mostrarMensaje('Producto añadido al carrito');
 }
 
-function mostrarMensaje(texto) {
+function eliminarProductoDelCarrito(id) {
+    const carrito = getCarrito().filter(p => p.id !== id);
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+    mostrarCarrito(); // Mostra el carrito actualitzat
+}
 
+function mostrarMensaje(texto) {
     const mensaje = document.getElementById('mensaje-carrito');
 
     mensaje.textContent = texto;
@@ -53,15 +77,7 @@ function mostrarMensaje(texto) {
     }, 2000);
 }
 
-// Enviar al checkout
-async function checkout(email) {
-  const res = await fetch('/api/checkout.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, carrito: getCarrito() })
-  });
-  const data = await res.json();
-  if (data.ok) {
-    localStorage.removeItem('carrito'); // Limpiar el carrito
-  }
-}
+// Mostrar el carrito al cargar la pagina
+document.addEventListener('DOMContentLoaded', () => {
+    mostrarCarrito();
+});

@@ -1,52 +1,7 @@
 <?php include_once __DIR__ . '/../includes/head.html'; ?>
 <?php include_once __DIR__ . '/../includes/header.html'; ?>
 
+<h1>Tu carrito:</h1>
 <div id="carrito-contenedor"></div>
-
-<script>
-mostrarCarrito();
-
-function mostrarCarrito() {
-    const carrito = getCarrito();
-    const contenedorCarrito = document.getElementById('carrito-contenedor');
-    contenedorCarrito.innerHTML = '';
-    if (carrito.length === 0) {
-        contenedorCarrito.innerHTML = '<p>No hay productos en el carrito.</p>';
-    } else {
-        carrito.forEach(producto => {
-        const div = document.createElement('div');
-        div.classList.add('producto-carro');
-        div.innerHTML = `
-            <img src="${producto.imagen}" alt="${producto.nombre}">
-            <h4>${producto.nombre}</h4>
-            <p>Precio: $${producto.precio}</p>
-            <p>Cantidad: ${producto.cantidad}</p>
-            <button class="btn-eliminar" data-id="${producto.id}">Eliminar</button>
-        `;
-        contenedorCarrito.appendChild(div);
-    });
-    }
-}
-
-// Devuelve el carrito en objeto (Array)
-function getCarrito() {
-    return JSON.parse(localStorage.getItem('carrito') || '[]');
-}
-
-
-
-// Enviar al checkout
-async function checkout(email) {
-  const res = await fetch('/api/checkout.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, carrito: getCarrito() })
-  });
-  const data = await res.json();
-  if (data.ok) {
-    localStorage.removeItem('carrito'); // Limpiar el carrito
-  }
-}
-</script>
 
 <?php include_once __DIR__ . '/../includes/footer.html'; ?>
