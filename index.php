@@ -17,13 +17,20 @@
                 const div = document.createElement("div");
                 div.className = "producto";
                 div.innerHTML = `
-                    <img src="${producto.imatge}" alt="Imagen del Producto">
-                    <div><button onclick="añadirAlCarrito(${producto.id})">Añadir al Carrito</button></div>
-                    <div class="nom">${producto.nom}</div>
-                    <div class="descripcio">${producto.descripcio}</div>
-                    <div class="preu">$${producto.preu}</div>
+                    <img src="${producto.imagen}" alt="Imagen del Producto">
+                    <div><button>Añadir al Carrito</button></div>
+                    <div class="nom">${producto.nombre}</div>
+                    <div class="descripcio">${producto.descripcion}</div>
+                    <div class="preu">$${producto.precio}</div>
                     <div class="stock">Stock: ${producto.stock}</div>
+                    <div id="mensaje-carrito"></div>
+                    <div id="listado-productos"></div>
                 `;
+                const boton = div.querySelector("button");
+                boton.addEventListener("click", () => {
+                    addProductoAlCarrito(producto);
+                });
+                
                 container.appendChild(div);
                 });
             } else {
@@ -33,10 +40,6 @@
         .catch(error => {
         document.getElementById("listado-productos").innerHTML = "<p>Error de conexión con la API.</p>";
         });
-        // TODO: Funcion para implementar producto al carro
-        function añadirAlCarrito(idProducto) {
-            
-        }
     </script>
 
 <?php include_once __DIR__ . '/includes/footer.html'; ?>

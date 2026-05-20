@@ -4,14 +4,14 @@ require_once __DIR__ . '/../includes/db_connect.php'; // Connexió a la base de 
 // Creació de la taula productos
 $db->exec("CREATE TABLE IF NOT EXISTS productos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nom TEXT,
-    descripcio TEXT,
-    imatge TEXT,
-    preu REAL,
+    nombre TEXT,
+    descripcion TEXT,
+    imagen TEXT,
+    precio REAL,
     stock INTEGER
 )");
 
-$db->exec("INSERT INTO productos (nom, descripcio, imatge, preu, stock) VALUES
+$db->exec("INSERT INTO productos (nombre, descripcion, imagen, precio, stock) VALUES
 ('Conos', 'Set 40 Conos de entrenamiento', 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcS5k78EeoDvFhWDm_Kt6U1S4klIokTKnvXFSHmXblsPCs0v-N7aKVlAGX9InMrZdy6w8jW9iDQlGPi6QWu2PYIEw51QXLA7Ne0HUXlWIYKGeQLraka7OnuQ4wcySnc8bE0w7igb3J0Z0Q&usqp=CAc', 15.95, 30),
 ('Vallas', 'Set de 6 mini vallas para velocidad y salto', 'https://www.dondeporte.com/3614157-home_default/valla-entrenamiento-antilesion-30cm.webp', 6.50, 200),
 ('Petos', 'Pack de 10 petos deportivos de colores', 'https://www.ofertadeportes.com/62883-large_default/petos-deportivos-asioka-basic-6211.jpg', 29.99, 5),
