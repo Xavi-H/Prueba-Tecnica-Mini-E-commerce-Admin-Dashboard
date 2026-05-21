@@ -14,30 +14,46 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
         // /api/productos.php - Confirmar compra
         $data = json_decode(file_get_contents('php://input'), true);
-        $email = $data['email'];
-        $carrito = $data['carrito'];
+        $email = trim($data['email'] ?? '');
+        $carrito = $data['carrito'] ?? [];
 
-        if (!$email || !$carrito) {
+        // Validación email
+        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
             http_response_code(400);
-            echo json_encode(['error' => 'Datos incompletos']);
+            echo json_encode(['ok' => false, 'error' => 'Email inválido']);
+            exit;
+        }
+        // Validación carrito
+        if (empty($carrito) || !is_array($carrito)) {
+            http_response_code(400);
+            echo json_encode(['ok' => false, 'error' => 'El carrito está vacío']);
             exit;
         }
 
-        $db->beginTransaction();
+        $db->exec('BEGIN TRANSACTION');
+        
         try {
             $precioTotal = 0;
             $lineas_pedido = [];
             foreach ($carrito as $producto){
-                $stmt = $db->prepare('SELECT precio, stock FROM productos WHERE id = :id');
-                $stmt->bindValue(':id', $producto['id'], SQLITE3_INTEGER);
-                $infoProducto = $stmt->fetch();
+                if ($producto['cantidad'] <= 0) {
+                    throw new Exception('Cantidad inválida para el producto con id: ' . $producto['id']);
+                }
 
-                if (!$infoProducto || $infoProducto['stock'] < $producto['cantidad']) {
+                $stmt = $db->prepare('SELECT id, precio, stock FROM productos WHERE id = :id');
+                $stmt->bindValue(':id', $producto['id'], SQLITE3_INTEGER);
+                $infoProducto = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+
+                if (!$infoProducto) {
+                    throw new Exception('Producto no encontrado con id: ' . $producto['id']);
+                }
+
+                if ($infoProducto['stock'] < $producto['cantidad']) {
                     throw new Exception('Stock insuficiente para el producto con id: ' . $producto['id']);
                 }
 
                 $subtotal = $infoProducto['precio'] * $producto['cantidad'];
-                $total += $subtotal;
+                $precioTotal += $subtotal;
                 $lineas_pedido[] = ['producto_id' => $producto['id'], 'cantidad' => $producto['cantidad'], 'precio_unitario' => $infoProducto['precio']];
             }
 
@@ -46,21 +62,27 @@ switch ($_SERVER['REQUEST_METHOD']) {
             $stmt->bindValue(':email', $email, SQLITE3_TEXT);
             $stmt->bindValue(':total', $precioTotal, SQLITE3_FLOAT);
             $stmt->execute();
-            $pedidoId = $db->lastInsertId();
+            $pedido_id = $db->lastInsertId();
 
             // Insertar líneas y descontar stock
             foreach ($lineas_pedido as $linea) {
-                $stmt = $db->prepare('INSERT INTO lineas_pedido (pedido_id, producto_id, cantidad, precio_unitario) VALUES (?,?,?,?)');
-                $stmt->execute([$pedidoId, $linea['producto_id'], $linea['cantidad'], $linea['precio_unitario']]);
+                $stmt = $db->prepare('INSERT INTO lineas_pedido (pedido_id, producto_id, cantidad, precio_unitario) VALUES (:pedido_id, :producto_id, :cantidad, :precio_unitario)');
+                $stmt->bindValue(':pedido_id', $pedido_id, SQLITE3_INTEGER);
+                $stmt->bindValue(':producto_id', $linea['producto_id'], SQLITE3_INTEGER);
+                $stmt->bindValue(':cantidad', $linea['cantidad'], SQLITE3_INTEGER);
+                $stmt->bindValue(':precio_unitario', $linea['precio_unitario'], SQLITE3_FLOAT);
+                $stmt->execute();
 
-                $stmt = $db->prepare('UPDATE productos SET stock = stock - ? WHERE id = ?');
-                $stmt->execute([$linea['cantidad'], $linea['producto_id']]);
+                $stmt = $db->prepare('UPDATE productos SET stock = stock - :cantidad WHERE id = :id');
+                $stmt->bindValue(':cantidad', $linea['cantidad'], SQLITE3_INTEGER);
+                $stmt->bindValue(':id', $linea['producto_id'], SQLITE3_INTEGER);
+                $stmt->execute();
             }
-            $db->commit(); // Confirmar cambios en la base de datos
-            echo json_encode(['ok' => true]);
-
+            $db->exec('COMMIT'); // Confirmar cambios en la base de datos
+            echo json_encode(['ok' => true, 'pedido_id'=> $pedido_id, 'total'    => $precioTotal]);
+            
         } catch (Exception $e) {
-            $db->rollback(); // Deshacer cambios en la base de datos en caso de error
+            $db->exec('ROLLBACK'); // Deshacer cambios en la base de datos en caso de error
             http_response_code(400);
             echo json_encode(['ok' => false, 'error' => $e->getMessage()]);
             exit;
