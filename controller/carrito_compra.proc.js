@@ -87,3 +87,16 @@ function mostrarMensaje(texto) {
 document.addEventListener('DOMContentLoaded', () => {
     mostrarCarrito();
 });
+
+// Realiza la compra de los productos en el carrito llamando a la API
+async function finalizarCompra(email) {
+    const res = await fetch('/api/productos.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, carrito: getCarrito() }) // Envia el correo y el carrito
+  });
+    const data = await res.json();
+    if (data.ok) {
+        localStorage.removeItem('carrito'); // Si a ido bien, se limpia el carrito
+  }
+}
