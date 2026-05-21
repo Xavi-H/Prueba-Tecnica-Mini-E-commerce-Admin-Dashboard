@@ -3,23 +3,29 @@ function getCarrito() {
     return JSON.parse(localStorage.getItem('carrito') || '[]');
 }
 
+// Guardar el carrito actualizado
+function guardarCarrito(carrito){
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+}
+
+// Mostra els productes del carrito a la pagina carrito_compra.php
 function mostrarCarrito() {
     const contenedorCarrito = document.getElementById('carrito-contenedor');
-
-    if(!contenedorCarrito) return; // Si no existe el contenedor (Resto de paginas que no sean la del carrito)
+    if(!contenedorCarrito) return; // Si no existe el contenedor (Resto de paginas que no sean carrito_compra.php)
     
-    contenedorCarrito.innerHTML = '';
     const carrito = getCarrito();
+    contenedorCarrito.innerHTML = '';
 
     if (carrito.length === 0) {
         contenedorCarrito.innerHTML = '<p>No hay productos en el carrito.</p>';
         return;
     }
 
+    let precioTotal = 0;
     carrito.forEach(producto => {
-        // Calcular subtotal
+        // Calcular subtotal de un producto
         const subtotal = producto.precio * producto.cantidad;
-        total += subtotal;
+        precioTotal += subtotal;
 
         const div = document.createElement('div');
         div.classList.add('producto-carro');
@@ -28,19 +34,19 @@ function mostrarCarrito() {
             <h4>${producto.nombre}</h4>
             <p>Precio: $${producto.precio}</p>
             <p>Cantidad: ${producto.cantidad}</p>
-            <button class="btn-eliminar" data-id="${producto.id}">Eliminar</button>
+            <button class="btn-eliminar">Eliminar</button>
         `;
-        // Eliminar producto del carrito
+        // Boton de eliminar producto del carrito
         div.querySelector('.btn-eliminar').addEventListener('click', function () {
-            eliminarProductoDelCarrito(Number(this.dataset.id));
+            eliminarProductoDelCarrito(producto.id);
         });
         contenedorCarrito.appendChild(div);
     });
 
-    // Mostrar el total
+    // Mostrar el precio total
     const totalDiv = document.createElement('div');
     totalDiv.classList.add('carrito-total');
-    totalDiv.innerHTML = `<strong>Total: $${total.toFixed(2)}</strong>`;
+    totalDiv.innerHTML = `<strong>Total: $${precioTotal.toFixed(2)}</strong>`;
     contenedorCarrito.appendChild(totalDiv);
 }
 
@@ -53,28 +59,28 @@ function addProductoAlCarrito(producto) {
     const productoExistente = carrito.find(p => p.id === producto.id);
     if (productoExistente) {
         productoExistente.cantidad += 1;
+        mostrarMensaje('Cantidad actualizada en el carrito correctamente');
     } else {
         carrito.push({ id: producto.id, nombre: producto.nombre, precio: producto.precio, cantidad: 1, imagen: producto.imagen });
+        mostrarMensaje('Producto añadido al carrito correctamente');
     }
     localStorage.setItem('carrito', JSON.stringify(carrito)); // Actualizar el carrito en localStorage
-    mostrarMensaje('Producto añadido al carrito');
 }
 
 function eliminarProductoDelCarrito(id) {
     const carrito = getCarrito().filter(p => p.id !== id);
     localStorage.setItem('carrito', JSON.stringify(carrito));
-    mostrarCarrito(); // Mostra el carrito actualitzat
+    mostrarCarrito(); // Actualitzar el carrito en la pagina
 }
 
 function mostrarMensaje(texto) {
     const mensaje = document.getElementById('mensaje-carrito');
 
-    mensaje.textContent = texto;
+    mensaje.innerHTML = texto;
     mensaje.style.display = 'block';
-
     setTimeout(() => {
         mensaje.style.display = 'none';
-    }, 2000);
+    }, 15000); // Ocultar mensaje después de 15 segundos
 }
 
 // Mostrar el carrito al cargar la pagina
