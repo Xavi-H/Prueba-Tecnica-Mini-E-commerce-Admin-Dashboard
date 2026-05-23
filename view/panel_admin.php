@@ -14,8 +14,8 @@ if (!isset($_SESSION['es_admin'])) {
 <div id="listado-pedidos"></div>
 
 <script>
-    const url = "/api/productos.php?action=pedidos"; // Obtener todos los pedidos
-    fetch(url)
+    const urlPedidos = "/api/productos.php?action=pedidos"; // Obtener todos los pedidos
+    fetch(urlPedidos)
         .then(response => response.json())
         .then(data => {
         const container = document.getElementById("listado-pedidos");
@@ -53,4 +53,48 @@ if (!isset($_SESSION['es_admin'])) {
     document.getElementById("listado-pedidos").innerHTML = "<p>Error de conexión con la API.</p>";
     });
 </script>
+
+<h2>Productos mas Rentables:</h2>
+
+<div id="listado-rentables"></div>
+
+<script>
+    const urlRentables = "/api/productos.php?action=rentables"; // Obtener los productos más rentables
+    fetch(urlRentables)
+        .then(response => response.json())
+        .then(data => {
+        const container = document.getElementById("listado-rentables");
+
+        if (!Array.isArray(data) || data.length === 0) {
+            container.innerHTML = "<p>No hay productos rentables todavía.</p>";
+            return;
+        }
+        let html = `
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Total Vendido</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+        data.forEach(producto => {
+            html += `
+                <tr>
+                    <td>${producto.id}</td>
+                    <td>${producto.nombre}</td>
+                    <td>$${parseFloat(producto.total_vendido).toFixed(2)}</td>
+                </tr>
+            `;
+        });
+        html += `</tbody></table>`;
+        container.innerHTML = html;
+    })
+    .catch(error => {
+    document.getElementById("listado-rentables").innerHTML = "<p>Error de conexión con la API.</p>";
+    });
+</script>
+
 <?php include_once __DIR__ . '/../includes/footer.html'; ?>
