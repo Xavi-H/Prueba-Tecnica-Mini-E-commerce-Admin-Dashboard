@@ -1,3 +1,6 @@
+<?php
+session_start(); // Para ver si es admin o no
+?>
 <header>
     <nav>
         <ul>

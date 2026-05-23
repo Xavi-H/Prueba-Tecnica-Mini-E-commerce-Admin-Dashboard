@@ -11,7 +11,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bindParam(':a', $admin);
     $stmt->bindParam(':p', $pass);
 
-    $dadasAdmin = $stmt->execute();
+    $dadasAdmin = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
 
     if($dadasAdmin) {
         $_SESSION['admin'] = $admin; // Guarda el nombre del admin en la sesión

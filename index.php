@@ -1,5 +1,7 @@
-<?php include_once __DIR__ . '/includes/head.html'; ?>
-<?php include_once __DIR__ . '/includes/header.php'; ?>
+<?php 
+include_once __DIR__ . '/includes/head.html';
+include_once __DIR__ . '/includes/header.php'; 
+?>
 
 <body>
     <h1>Productos</h1>
