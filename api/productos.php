@@ -62,7 +62,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
             $stmt->bindValue(':email', $email, SQLITE3_TEXT);
             $stmt->bindValue(':total', $precioTotal, SQLITE3_FLOAT);
             $stmt->execute();
-            $pedido_id = $db->lastInsertId();
+            $pedido_id = $db->lastInsertRowID();
 
             // Insertar líneas y descontar stock
             foreach ($lineas_pedido as $linea) {

@@ -17,6 +17,7 @@
     <!-- Mensaje de éxito (oculto hasta que el pedido se procese) -->
     <div id="confirmacion" style="display:none;">
         <h2>¡Pedido realizado con éxito!</h2>
+        <p>Email del cliente: <strong id="email-confirmado"></strong></p>
         <a href="/index.php">Volver a la tienda</a>
     </div>
 
@@ -66,7 +67,7 @@
         btn.textContent = 'Procesando...';
 
         try {
-            const res = await fetch('/api/api.php', {
+            const res = await fetch('/api/productos.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, carrito })
@@ -93,7 +94,7 @@
         }
     });
 
-    document.addEventListener('DOMContentLoaded', () => { mostrarResumen(); });
+    document.addEventListener('DOMContentLoaded', mostrarResumen);
     </script>
 </body>
 
