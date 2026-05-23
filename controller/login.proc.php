@@ -8,8 +8,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pass = $_POST['admin_pass'];
 
     $stmt = $db->prepare("SELECT * FROM admins WHERE admin_nombre = :a AND admin_pass = :p");
-    $stmt->bindParam(':a', $admin);
-    $stmt->bindParam(':p', $pass);
+    $stmt->bindValue(':a', $admin);
+    $stmt->bindValue(':p', $pass);
 
     $dadasAdmin = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
 
@@ -20,7 +20,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     } else {
         // Si falla, redirige al login con mensaje de error
-        header("Location: ../view/login.php?error=1");
+        header("Location: /view/login.php?error=1");
         exit();
     }
 } else {
