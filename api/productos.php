@@ -13,6 +13,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
             }
             echo json_encode($pedidos);
             exit;
+        } elseif (isset($_GET['action']) && $_GET['action'] === 'rentables') {
+            $stmt = $db->query('SELECT p.id, p.nombre, SUM(l.cantidad * l.precio_unitario) AS total_vendido FROM productos p JOIN lineas_pedido l ON p.id = l.producto_id GROUP BY p.id ORDER BY total_vendido DESC LIMIT 3');
+            $rentables = [];
+            while ($producto = $stmt->fetchArray(SQLITE3_ASSOC)) {
+                $rentables[] = $producto;
+            }
+            echo json_encode($rentables);
+            exit;
         } else {
             // /api/productos.php - Obtener todos los productos
             $stmt = $db->query('SELECT * FROM productos');
