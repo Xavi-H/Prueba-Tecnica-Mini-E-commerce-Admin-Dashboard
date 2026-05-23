@@ -1,7 +1,5 @@
 // TODO: Frontend:
 
-    - Checkout (Simulado): Un botón para "Finalizar Compra". No hace falta pasarela de pago. Al pulsar, debe pedir un email de contacto y crear el registro del pedido en la base de datos restando el stock correspondiente.
-
     - Añadir estilos
 
 // TODO: Backend:
