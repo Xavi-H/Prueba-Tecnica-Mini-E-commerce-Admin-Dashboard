@@ -3,13 +3,25 @@ require_once __DIR__ . '/../includes/db_connect.php';
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-        // /api/productos.php - Obtener todos los productos
-        $stmt = $db->query('SELECT * FROM productos');
-        $productos = [];
-        while ($producto = $stmt->fetchArray(SQLITE3_ASSOC)) {
-            $productos[] = $producto;
+        if (isset($_GET['action']) && $_GET['action'] === 'pedidos') {
+            // /api/productos.php?action=pedidos - Obtener todos los pedidos
+            $stmt = $db->query('SELECT * FROM pedidos ORDER BY fecha DESC');
+            $pedidos = [];
+            while ($pedido = $stmt->fetchArray(SQLITE3_ASSOC)) {
+                $pedidos[] = $pedido;
+                
+            }
+            echo json_encode($pedidos);
+            exit;
+        } else {
+            // /api/productos.php - Obtener todos los productos
+            $stmt = $db->query('SELECT * FROM productos');
+            $productos = [];
+            while ($producto = $stmt->fetchArray(SQLITE3_ASSOC)) {
+                $productos[] = $producto;
+            }
+            echo json_encode($productos);
         }
-        echo json_encode($productos);
         break;
     case 'POST':
         // /api/productos.php - Confirmar compra

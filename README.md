@@ -2,6 +2,8 @@
 
     - Añadir estilos
 
+    - README.md (Explicación proyecto)
+
 // TODO: Backend:
 
     - Panel admin: 
