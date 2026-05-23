@@ -38,10 +38,10 @@
         carrito.forEach(p => {
             const subtotal = p.precio * p.cantidad;
             total += subtotal;
-            html += `<li>${p.nombre} * ${p.cantidad} = $${subtotal.toFixed(2)}</li>`;
+            html += `<li>${p.nombre} * ${p.cantidad} = ${subtotal.toFixed(2)}€</li>`;
         });
 
-        html += `</ul><p><strong>Total: $${total.toFixed(2)}</strong></p>`;
+        html += `</ul><p><strong>Total: ${total.toFixed(2)}€</strong></p>`;
         contenedor.innerHTML = html;
     }
 

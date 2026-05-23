@@ -25,7 +25,7 @@ include_once __DIR__ . '/includes/header.php';
                         <img src="${producto.imagen}" alt="Imagen del Producto">
                         <div class="nom">${producto.nombre}</div>
                         <div class="descripcio">${producto.descripcion}</div>
-                        <div class="preu">$${producto.precio}</div>
+                        <div class="preu">${producto.precio}€</div>
                         <div class="stock">Stock: ${producto.stock}</div>
                         <button class="btn-añadir">Añadir al Carrito</button>
                     `;

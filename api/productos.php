@@ -5,7 +5,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
         if (isset($_GET['action']) && $_GET['action'] === 'pedidos') {
             // /api/productos.php?action=pedidos - Obtener todos los pedidos
-            $stmt = $db->query('SELECT * FROM pedidos ORDER BY fecha DESC');
+            $stmt = $db->query('SELECT * FROM pedidos ORDER BY fecha DESC LIMIT 10');
             $pedidos = [];
             while ($pedido = $stmt->fetchArray(SQLITE3_ASSOC)) {
                 $pedidos[] = $pedido;
@@ -14,6 +14,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
             echo json_encode($pedidos);
             exit;
         } elseif (isset($_GET['action']) && $_GET['action'] === 'rentables') {
+            // /api/productos.php?action=rentables - Obtener los productos más rentables
             $stmt = $db->query('SELECT p.id, p.nombre, SUM(l.cantidad * l.precio_unitario) AS total_vendido FROM productos p JOIN lineas_pedido l ON p.id = l.producto_id GROUP BY p.id ORDER BY total_vendido DESC LIMIT 3');
             $rentables = [];
             while ($producto = $stmt->fetchArray(SQLITE3_ASSOC)) {

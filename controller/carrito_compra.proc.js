@@ -32,7 +32,7 @@ function mostrarCarrito() {
         div.innerHTML = `
             <img src="${producto.imagen}" alt="${producto.nombre}">
             <h4>${producto.nombre}</h4>
-            <p>Precio: $${producto.precio}</p>
+            <p>Precio: ${producto.precio}€</p>
             <p>Cantidad: ${producto.cantidad}</p>
             <button class="btn-eliminar">Eliminar</button>
         `;
@@ -46,7 +46,7 @@ function mostrarCarrito() {
     // Mostrar el precio total
     const totalDiv = document.createElement('div');
     totalDiv.classList.add('carrito-total');
-    totalDiv.innerHTML = `<strong>Total: $${precioTotal.toFixed(2)}</strong>`;
+    totalDiv.innerHTML = `<strong>Total: ${precioTotal.toFixed(2)}€</strong>`;
     contenedorCarrito.appendChild(totalDiv);
 }
 
