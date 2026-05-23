@@ -38,3 +38,12 @@ $db->exec("CREATE TABLE IF NOT EXISTS lineas_pedido (
     FOREIGN KEY (pedido_id) REFERENCES pedidos (id),
     FOREIGN KEY (producto_id) REFERENCES productos (id)
 )");
+
+// Tabla admins
+$db->exec("CREATE TABLE IF NOT EXISTS admins (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    admin_nombre TEXT UNIQUE,
+    admin_pass TEXT
+)");
+
+$db->exec("INSERT INTO admins (admin_nombre, admin_pass) VALUES ('xavi', '1234')");
