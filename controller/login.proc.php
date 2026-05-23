@@ -10,14 +10,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $db->prepare("SELECT * FROM admins WHERE admin_nombre = :a AND admin_pass = :p");
     $stmt->bindParam(':a', $admin);
     $stmt->bindParam(':p', $pass);
-    $stmt->execute();
 
-    $dadasAdmin = $stmt->fetchArray(SQLITE3_ASSOC);
+    $dadasAdmin = $stmt->execute();
 
     if($dadasAdmin) {
         $_SESSION['admin'] = $admin; // Guarda el nombre del admin en la sesión
         $_SESSION['es_admin'] = true;
-        header("Location: /panel_admin.php");
+        header("Location: /view/panel_admin.php");
         exit();
     } else {
         // Si falla, redirige al login con mensaje de error
@@ -26,6 +25,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 } else {
     // Si se entra por GET o otro metodo, redirige al login
-    header("Location: /login.php");
+    header("Location: /view/login.php");
     exit();
 }
