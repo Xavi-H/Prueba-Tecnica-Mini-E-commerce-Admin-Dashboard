@@ -4,7 +4,7 @@ session_start(); // Para ver si es admin o no
 <header>
     <nav>
         <ul>
-            <li><a href="/index.php">Home</a></li>
+            <li><a href="/index.php">Tienda</a></li>
             <li><a href="/view/carrito_compra.php">Carrito</a></li>
             <?php if(isset($_SESSION['es_admin'])): ?>
                 <li><a href="/view/panel_admin.php">Panel Admin</a></li>
