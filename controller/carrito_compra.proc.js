@@ -8,6 +8,13 @@ function guardarCarrito(carrito){
     localStorage.setItem('carrito', JSON.stringify(carrito));
 }
 
+// Muestra u oculta el enlace al checkout según si hay productos o no en el carrito
+function actualizarEnlaceCheckout() {
+    const enlace = document.getElementById('enlace-checkout');
+    if (!enlace) return; // Si no esta en carrito_compra.php
+    enlace.style.display = getCarrito().length > 0 ? 'inline-block' : 'none'; // Si la longitud es mayor a 0 es visible, sino no
+}
+
 // Mostra els productes del carrito a la pagina carrito_compra.php
 function mostrarCarrito() {
     const contenedorCarrito = document.getElementById('carrito-contenedor');
@@ -18,6 +25,7 @@ function mostrarCarrito() {
 
     if (carrito.length === 0) {
         contenedorCarrito.innerHTML = '<p>No hay productos en el carrito.</p>';
+        actualizarEnlaceCheckout();  // Oculta el enlace al checkout
         return;
     }
 
@@ -48,6 +56,8 @@ function mostrarCarrito() {
     totalDiv.classList.add('carrito-total');
     totalDiv.innerHTML = `<strong>Total: ${precioTotal.toFixed(2)}€</strong>`;
     contenedorCarrito.appendChild(totalDiv);
+
+    actualizarEnlaceCheckout(); // Actualizar visibilidad del enlace
 }
 
 /**
