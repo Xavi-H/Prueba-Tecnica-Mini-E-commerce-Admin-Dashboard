@@ -105,7 +105,12 @@ stock
 **Consulta SQL de los 3 productos más rentables** (usada en el panel admin):
 
 ```sql
--- TODO: Poner la consulta
+SELECT p.id, p.nombre, SUM(l.cantidad * l.precio_unitario) AS total_vendido, SUM(l.cantidad) AS unidades_vendidas
+FROM productos p
+JOIN lineas_pedido l ON p.id = l.producto_id 
+GROUP BY p.id
+ORDER BY total_vendido DESC 
+LIMIT 3
 ```
 
 ---

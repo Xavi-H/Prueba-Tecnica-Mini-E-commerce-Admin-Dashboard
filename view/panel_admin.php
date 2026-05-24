@@ -76,6 +76,7 @@ if (!isset($_SESSION['es_admin'])) {
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Total Vendido</th>
+                        <th>Unidades Vendidas</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -85,7 +86,8 @@ if (!isset($_SESSION['es_admin'])) {
                 <tr>
                     <td>${producto.id}</td>
                     <td>${producto.nombre}</td>
-                    <td>$${parseFloat(producto.total_vendido).toFixed(2)}</td>
+                    <td>${parseFloat(producto.total_vendido).toFixed(2)}€</td>
+                    <td>${producto.unidades_vendidas}</td>
                 </tr>
             `;
         });
