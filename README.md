@@ -4,6 +4,10 @@ E-commerce funcional con tienda pública y panel de administración, construido 
 
 ---
 
+## Video de demostración del funcionamiento de la web (clica la imagen)
+[![Demo de la web](https://img.youtube.com/vi/62p6DM1bdyc/maxresdefault.jpg)](https://youtu.be/62p6DM1bdyc)
+
+
 ## Stack tecnológico
 
 | Capa | Tecnología | Motivo |
@@ -56,7 +60,7 @@ git clone https://github.com/Xavi-H/Prueba-Tecnica-Mini-E-commerce-Admin-Dashboa
 
 **2. Inicializar la base de datos**
 
-Ejecuta este comando una sola vez. Crea las tablas y carga los 7 productos de prueba:
+Ejecuta este comando una sola vez. Crea las tablas y carga los productos de prueba:
 ```bash
 php dataBase/db_init.php
 ```
