@@ -75,14 +75,14 @@ php -S localhost:8000
 | URL | Descripción |
 |---|---|
 | `http://localhost:8000` | Tienda pública |
-| `http://localhost:8000/view/panel_admin.php` | Panel de administración |
+| `http://localhost:8000/view/panel_admin.php` | Panel de administración (requiere login)|
 
 ---
 
 ## Credenciales del administrador
 
 ```
-Usuario:    xavi
+Usuario: xavi
 Contraseña: 1234
 ```
 
